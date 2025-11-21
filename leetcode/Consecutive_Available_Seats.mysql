@@ -1,0 +1,19 @@
+# Write your MySQL query statement below
+with cte as 
+(
+    select 
+    seat_id,
+    free,
+    row_number() over (order by seat_id) - row_number() over (partition by free order by seat_id) as row_
+    from cinema
+),cte2 as 
+(
+    select *
+    from cte
+    group by row_, free
+    having count(*) > 1
+)
+select seat_id
+from cte
+where (free, row_) in (select free, row_ from cte2) and free = 1
+order by 1
