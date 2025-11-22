@@ -1,0 +1,11 @@
+import pandas as pd
+
+def team_size(employee: pd.DataFrame) -> pd.DataFrame:
+    agg_dict = {
+        'team_size' : ('team_id', 'count')
+    }
+    for new_col, (col, func) in agg_dict.items():
+        employee[new_col] = employee.groupby('team_id')[col].transform(func)
+    
+    return employee[['employee_id', 'team_size']]
+    
