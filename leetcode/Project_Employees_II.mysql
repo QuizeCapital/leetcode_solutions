@@ -1,0 +1,12 @@
+with temp_proj as (
+    select
+    project_id
+    ,count(employee_id) as employee_count
+    ,rank() over (order by count(employee_id) desc) as ranked
+    from project
+    group by project_id
+)
+
+select project_id
+from temp_proj
+where ranked = 1
