@@ -1,0 +1,16 @@
+# Write your MySQL query statement below
+with tmp_sales as (
+select 
+s.seller_id
+-- ,s.product_id
+-- ,sum(price) as total_amount
+,rank() over (order by sum(price) desc) as highest_rank
+from Sales s
+join Product p on s.product_id = p.product_id
+group by s.seller_id
+)
+
+select seller_id from tmp_sales
+where highest_rank = 1
+
+
