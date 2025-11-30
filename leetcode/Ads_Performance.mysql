@@ -1,0 +1,20 @@
+# Write your MySQL query statement below
+with tmp_tab as (
+    select 
+    ad_id
+    ,sum(case when action = 'Clicked' then 1 else 0 end) as click_count
+    ,sum(case when action = 'Viewed' then 1 else 0 end) as view_count
+    from Ads
+    group by ad_id
+),
+sec_tmp as (
+    select
+    ad_id
+    ,round(
+        case when click_count + view_count = 0 then 0 else click_count / (click_count + view_count) * 100
+        end, 2) as ctr
+    from tmp_tab
+)
+
+select * from sec_tmp
+order by ctr desc, ad_id asc
