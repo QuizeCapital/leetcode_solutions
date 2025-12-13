@@ -1,0 +1,12 @@
+# Write your MySQL query statement below
+WITH tm_tab AS (
+    SELECT 
+        AVG(price) as all_price
+    FROM listings
+)
+select city 
+from listings
+group by city 
+having avg(price) > (select all_price from tm_tab)
+order by city
+
