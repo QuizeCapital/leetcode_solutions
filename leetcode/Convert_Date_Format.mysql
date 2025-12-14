@@ -1,0 +1,19 @@
+# Write your MySQL query statement below
+-- select 
+-- date_format(day, '%W', '%M' '%e', '%Y') as day 
+-- from Days
+
+select 
+concat(
+    DAYNAME(day),
+    ",",
+    " ",
+    MONTHNAME(day),
+    " ",
+    DAY(day),
+    ",",
+    " ",
+    Year(day)
+
+) as day 
+from days
