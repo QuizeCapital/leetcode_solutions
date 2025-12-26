@@ -1,0 +1,6 @@
+# Write your MySQL query statement below
+select 
+customer_id
+from Customers 
+group by customer_id
+having sum(case when year = 2021 then 1 * revenue else 0 end)  > 0
