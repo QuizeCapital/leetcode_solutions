@@ -1,0 +1,35 @@
+import pandas as pd
+
+def create_bar_chart(sessions: pd.DataFrame) -> pd.DataFrame:
+    sessions['mins'] = sessions['duration'] / 60
+    sessions['mins'] = sessions['mins'].astype(int)
+    
+    res_df = pd.DataFrame({'bin' : [
+        '[0-5>','[5-10>','[10-15>','15 or more'
+    ]} )
+
+    sessions['bin'] = np.where(
+        sessions['mins'] < 5, '[0-5>',
+        np.where(
+            sessions['mins'] < 10, '[5-10>',
+            np.where(
+                sessions['mins'] < 15, '[10-15>','15 or more',
+                
+            )
+        )
+    )
+
+    agg_dict = {
+        'total' : ('bin', 'count')
+    }
+
+    for new_col, (col, func) in agg_dict.items():
+        sessions[new_col] = sessions.groupby('bin')[col].transform(func)
+    # sessions =  sessions[['bins', 'total']].drop_duplicates()
+    results = res_df.merge(sessions, on = 'bin', how = 'left')
+    results =  results[['bin', 'total']].drop_duplicates()
+    results = results.fillna(0)
+    return results
+
+
+    
