@@ -1,0 +1,15 @@
+# Write your MySQL query statement below
+with tmp_mark as (
+    select max(salary) as max_salary
+    from Salaries 
+    where department = 'Marketing'
+),
+
+tmp_eng as (
+    select max(salary) as max_salary
+    from Salaries
+    where department = 'Engineering'
+)
+
+select  abs(tmp_mark.max_salary - tmp_eng.max_salary) as salary_difference
+from tmp_mark, tmp_eng
