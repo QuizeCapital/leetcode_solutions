@@ -1,0 +1,22 @@
+# Write your MySQL query statement below
+-- with tmp as (
+--     select 
+--     sum(occurences) / count(*)
+--     from Events
+--     group by business_id
+-- )
+-- select * from tmp
+
+with tmp as (select 
+    event_type
+    ,round(sum(occurrences) / count(*),2) as avg_occur
+    from Events
+    group by event_type)
+
+select 
+business_id
+from Events e
+left join tmp t on e.event_type = t.event_type
+where e.occurrences > t.avg_occur
+group by e.business_id
+having count(*) >= 2;
