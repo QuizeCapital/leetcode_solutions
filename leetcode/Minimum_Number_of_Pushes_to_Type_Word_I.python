@@ -1,0 +1,21 @@
+class Solution(object):
+    def minimumPushes(self, word):
+        """
+        :type word: str
+        :rtype: int
+        """
+        ans = 0 
+        n = len(word)
+        row  = 1
+        quotient, remainder = n // 8 , n % 8
+
+        while quotient: 
+            ans += 8 * row 
+
+            quotient -= 1
+            row += 1
+        
+        ans += remainder * row 
+        return ans 
+
+
