@@ -1,0 +1,13 @@
+import pandas as pd
+
+def gameplay_analysis(activity: pd.DataFrame) -> pd.DataFrame:
+    activity['event_date'] = pd.to_datetime(activity['event_date']).dt.strftime('%Y-%m-%d')
+    activity = activity.sort_values(by = ['event_date', 'player_id'], 
+    ascending = [True, False])
+
+    agg_dict = {'games_played_so_far' : ('games_played', 'cumsum')}
+    for new_col, (col, func) in agg_dict.items():
+        activity[new_col] = activity.groupby('player_id')[col].transform(func)
+    
+
+    return activity[['player_id', 'event_date', 'games_played_so_far']]
