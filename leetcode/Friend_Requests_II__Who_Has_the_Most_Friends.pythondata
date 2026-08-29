@@ -1,0 +1,23 @@
+import pandas as pd
+
+def most_friends(request_accepted: pd.DataFrame) -> pd.DataFrame:
+    
+    comb_list = request_accepted['requester_id'].to_list() + request_accepted['accepter_id'].to_list()
+
+    fin_dict = {}
+    for i in comb_list:
+        if i in fin_dict:
+            fin_dict[i] += 1
+        else:
+            fin_dict[i] = 1
+    max_val = 0
+    max_key = 0
+    for key, val in fin_dict.items():
+        if val > max_val:
+            max_val = val 
+            max_key = key
+    df_fin = pd.DataFrame({
+        'id' : [max_key],
+        'num' : [max_val]
+    })
+    return df_fin
