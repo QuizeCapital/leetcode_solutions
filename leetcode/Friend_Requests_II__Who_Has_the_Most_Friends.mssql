@@ -1,0 +1,15 @@
+/* Write your T-SQL query statement below */
+with comb_df as (
+    select requester_id as id
+    from requestaccepted 
+    union all 
+    select accepter_id 
+    from requestaccepted 
+)
+
+select top 1 
+id,
+count(id) as num
+from comb_df 
+group by id
+order by 2 desc
