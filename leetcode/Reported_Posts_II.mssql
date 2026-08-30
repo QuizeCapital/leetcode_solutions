@@ -1,0 +1,19 @@
+/* Write your T-SQL query statement below */
+with temp_perc as (
+    select 
+action_date
+-- ,1.0 * sum(case when extra = 'spam' then 1 else 0 end)  / nullif(sum(case when remove_date is not null then 1 else 0 end),0)   as sum_perc 
+,count(distinct case when r.remove_date is not null then a.post_id end) * 100.0
+/ count( distinct a.post_id) as spam_removal_rate
+from actions a 
+left join removals r
+on a.post_id = r.post_id
+where a.extra = 'spam' and a.action = 'report'
+group by action_date
+
+)
+
+select  
+round(avg(spam_removal_rate),2) as  average_daily_percent 
+from temp_perc
+-- where sum_perc > 0
