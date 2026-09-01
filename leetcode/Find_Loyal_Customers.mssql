@@ -1,0 +1,11 @@
+/* Write your T-SQL query statement below */
+select 
+customer_id
+-- ,sum(case when transaction_type = 'refund' then 1.0 else 0 end)/ count(*) 
+from customer_transactions
+group by customer_id 
+having sum(case when transaction_type = 'purchase' then 1 else 0 end) > 2
+and datediff(day, min(transaction_date), max(transaction_date)) > 29
+and avg(case when transaction_type = 'refund' then 1.0 else 0 end) < 0.2
+
+
