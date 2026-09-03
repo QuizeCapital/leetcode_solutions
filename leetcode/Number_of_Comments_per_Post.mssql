@@ -1,0 +1,9 @@
+/* Write your T-SQL query statement below */
+select
+s.sub_id as post_id
+,count(distinct p.sub_id) as number_of_comments
+from submissions s
+left join submissions p 
+on s.sub_id = p.parent_id
+where s.parent_id is null
+group by s.sub_id 
