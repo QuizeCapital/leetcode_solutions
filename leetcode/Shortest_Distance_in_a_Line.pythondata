@@ -1,0 +1,13 @@
+import pandas as pd
+
+def shortest_distance(point: pd.DataFrame) -> pd.DataFrame:
+    # point['x'] = abs(point['x'])
+    point = point.sort_values(['x'])
+
+    # print(point)
+    # final_df = pd.DataFrame({'shortest' : [point['x'].diff()]})
+    
+    # results = pd.DataFrame({'shortest' : [point.iloc[1,0] - point.iloc[0,0]]})
+    results = pd.DataFrame({'shortest' : [point['x'].diff().min()]})
+    return results
+    
