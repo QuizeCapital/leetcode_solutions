@@ -1,0 +1,15 @@
+class Solution(object):
+    def checkDivisibility(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        sum_vals = sum(int(i) for i in list(str(n)))
+        # print(sum_vals)
+        prod_vals = 1
+        for i in list(str(n)):
+            prod_vals *= int(i)
+        # print(prod_vals)
+        # return n % sum_vals == 0 and n % prod_vals == 0\
+        divisor = sum_vals + prod_vals
+        return n % divisor == 0
