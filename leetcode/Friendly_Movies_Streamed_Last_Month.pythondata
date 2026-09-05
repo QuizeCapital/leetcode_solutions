@@ -1,0 +1,15 @@
+import pandas as pd
+
+def friendly_movies(tv_program: pd.DataFrame, content: pd.DataFrame) -> pd.DataFrame:
+    tv_program['program_date'] = pd.to_datetime(tv_program['program_date']).dt.strftime("%Y-%m-%d")
+    tv_program =  tv_program[(tv_program["program_date"] > "2020-05-31") &
+    (tv_program["program_date"] < "2020-07-01")]
+
+    tv_program["content_id"] = tv_program["content_id"].astype(str)
+    content["content_id"] = content["content_id"].astype(str)
+
+    df = tv_program.merge(content, on ="content_id")
+
+    df = df[(df['Kids_content'] == "Y") & (df['content_type'] == "Movies")][['title']].drop_duplicates()
+    return df
+    
