@@ -1,0 +1,17 @@
+class Solution(object):
+    def differenceOfSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        str_final = ""
+        sum_lis = sum(int(i) for i in nums)
+        
+        for val in nums:
+            str_final += str(val)
+        
+        str_list = list(str_final)
+        sum_digs = sum(int(i) for i in str_list)
+
+        return sum_lis - sum_digs
+        
