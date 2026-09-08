@@ -1,0 +1,18 @@
+import pandas as pd
+
+def analyze_products(product: pd.DataFrame, invoice: pd.DataFrame) -> pd.DataFrame:
+    df = invoice.merge(product , on = 'product_id', how = 'right')
+
+    agg_dict = {
+        'rest' : ('rest', 'sum')
+        , 'paid' : ('paid', 'sum')
+        , 'canceled' : ('canceled', 'sum')
+        , 'refunded' : ('refunded', 'sum')
+    }
+
+    for new_col, (col, func) in agg_dict.items():
+        df[new_col] = df.groupby('name')[col].transform(func)
+
+    return df.drop_duplicates(['name'])[[ 'name', 'rest', 'paid', 'canceled', 'refunded']].sort_values(['name'])
+
+    
