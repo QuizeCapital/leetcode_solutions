@@ -1,0 +1,32 @@
+/* Write your T-SQL query statement below */
+with temp as (
+    select 
+    *
+    , 'New York University' as uni
+    , case when score >= 90 then 1 else 0 end as excellent_flag 
+    from newyork 
+    union 
+    select 
+    *
+    , 'California University' as uni
+    , case when score >= 90 then 1 else 0 end as excellent_flag 
+    from california 
+), 
+agg_temp as (
+    select 
+    uni
+    , sum(excellent_flag) as excellent_count
+    from temp 
+    group by uni
+)
+
+SELECT
+    CASE
+        WHEN (SELECT excellent_count FROM agg_temp WHERE uni = 'New York University') >
+             (SELECT excellent_count FROM agg_temp WHERE uni = 'California University')
+            THEN 'New York University'
+        WHEN (SELECT excellent_count FROM agg_temp WHERE uni = 'California University') >
+             (SELECT excellent_count FROM agg_temp WHERE uni = 'New York University')
+            THEN 'California University'
+        ELSE 'No Winner'
+    END AS winner;
