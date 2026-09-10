@@ -1,0 +1,17 @@
+import pandas as pd
+
+def find_users_with_high_tokens(prompts: pd.DataFrame) -> pd.DataFrame:
+    agg_dict = {
+        'prompt_count' : ('prompt', 'nunique')
+        ,'avg_tokens' : ('tokens', 'mean')
+        ,'max_token' : ('tokens', 'max')
+    }
+
+    for new_col, (col, func) in agg_dict.items():
+        prompts[new_col] = prompts.groupby(['user_id'])[col].transform(func)
+
+    prompts = prompts[prompts['max_token'] > prompts['avg_tokens']]
+    prompts = prompts[prompts['prompt_count'] >= 3]
+    prompts['avg_tokens'] = round(prompts['avg_tokens'], 2)
+
+    return prompts[['user_id', 'prompt_count', 'avg_tokens']].drop_duplicates().sort_values(by=['avg_tokens', 'user_id'], ascending = [False, True])
