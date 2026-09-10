@@ -1,0 +1,7 @@
+/* Write your T-SQL query statement below */
+select 
+t.team_name as home_team 
+,ta.team_name as away_team 
+from teams t 
+cross join teams ta
+where t.team_name != ta.team_name
