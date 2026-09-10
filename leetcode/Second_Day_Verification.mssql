@@ -1,0 +1,9 @@
+/* Write your T-SQL query statement below */
+select  
+user_id
+from emails e
+left join texts t on e.email_id = t.email_id
+where datediff(day, signup_date, action_date) = 1 
+and action_date > signup_date
+and signup_action = 'Verified'
+order by user_id
