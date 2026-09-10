@@ -1,0 +1,16 @@
+/* Write your T-SQL query statement below */
+with metal as (
+    select 
+    symbol as metal 
+    from elements  
+    where type = 'Metal'
+),
+non_metal as (
+    select 
+    symbol as nonmetal 
+    from elements  
+    where type = 'Nonmetal'
+)
+
+select * from metal m 
+cross join non_metal n 
