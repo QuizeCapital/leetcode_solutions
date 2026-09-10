@@ -1,0 +1,13 @@
+import pandas as pd
+
+def form_bond(elements: pd.DataFrame) -> pd.DataFrame:
+    metal_mask = (elements['type'] == 'Metal')
+    nonmetal_mask = (elements['type'] == 'Nonmetal')
+    df = elements[metal_mask].merge(elements[nonmetal_mask], how = 'cross')
+    df = df[['symbol_x', 'symbol_y']]
+    df = df.rename(columns = {
+        'symbol_x' : 'metal'
+        , 'symbol_y' : 'nonmetal'
+    })
+    return df
+    
