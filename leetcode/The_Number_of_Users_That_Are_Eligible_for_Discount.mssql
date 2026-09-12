@@ -1,0 +1,14 @@
+CREATE FUNCTION getUserIDs(@startDate DATE, @endDate DATE, @minAmount INT) RETURNS INT AS
+BEGIN
+    RETURN (
+        /* Write your T-SQL query statement below. */
+        select count( *) as user_cnt from 
+        (select distinct user_id
+        from purchases 
+        -- group by user_id 
+        where amount >= @minAmount
+        and time_stamp between @startDate and @endDate)
+        as users
+        
+    );
+END
