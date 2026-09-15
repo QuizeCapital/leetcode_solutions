@@ -1,0 +1,18 @@
+class Solution(object):
+    def removeZeros(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        final_num = 0
+        place_val  = 1
+        while n > 0 :
+            last_num = n % 10 
+            if last_num != 0:
+               final_num  = final_num + (last_num * place_val)
+               place_val *= 10 
+            n = n//10
+        return final_num
+
+
+        
