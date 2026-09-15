@@ -1,0 +1,15 @@
+import pandas as pd
+
+def product_sales_analysis(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
+    df = sales.merge(product, on = 'product_id', how = 'left')
+    df['cost'] = df['quantity'] * df['price']
+
+    agg_dict = {
+        'spending' : ('cost', 'sum')
+    }
+
+    for new_col, (col, func) in agg_dict.items():
+        df[new_col] = df.groupby('user_id')[col].transform(func)
+
+    return df[['user_id', 'spending']].drop_duplicates().sort_values(by = ['spending', 'user_id'], ascending = [False, True])
+    
