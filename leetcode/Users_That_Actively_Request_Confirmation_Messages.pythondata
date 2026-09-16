@@ -1,0 +1,11 @@
+import pandas as pd
+
+def find_requesting_users(signups: pd.DataFrame, confirmations: pd.DataFrame) -> pd.DataFrame:
+    confirmations = confirmations.sort_values(by = ['user_id', 'time_stamp'])
+    confirmations['time_lag']  = confirmations['time_stamp'].shift(1)
+    confirmations['time_diff'] =  abs((confirmations['time_lag'] - confirmations['time_stamp']).dt.total_seconds() / 3600)
+    print(confirmations)
+    confirmations = confirmations[confirmations['time_diff'] <= 24]
+
+    return confirmations[['user_id']].drop_duplicates()
+    
