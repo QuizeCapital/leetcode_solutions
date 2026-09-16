@@ -1,0 +1,8 @@
+/* Write your T-SQL query statement below */
+select 
+tweet_id
+from tweets
+where len(content) > 140
+or len(content) - len(replace(content, '@', '')) > 3
+or len(content) - len(replace(content, '#', '')) > 3 
+order by tweet_id asc
