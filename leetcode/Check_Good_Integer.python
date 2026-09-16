@@ -1,0 +1,14 @@
+import math
+class Solution(object):
+    def checkGoodInteger(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        # sq_sum = 1
+        digit_sum = sum(int(i) for i in list(str(n)))
+        sq_sum = sum(int(i)**2 for i in list(str(n)))
+        # for i in list(str(n)):
+        #     sq_sum += int(i)**2
+
+        return sq_sum - digit_sum >= 50
