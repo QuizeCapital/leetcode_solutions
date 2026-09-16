@@ -1,0 +1,14 @@
+class Solution(object):
+    def countBalls(self, lowLimit, highLimit):
+        """
+        :type lowLimit: int
+        :type highLimit: int
+        :rtype: int
+        """
+
+        dict_data = defaultdict(int) 
+        for val in range(lowLimit, highLimit + 1):
+            sum_digs = sum(int(i) for i in list(str(val)))
+            dict_data[sum_digs] += 1
+        return max(dict_data.values())
+        
