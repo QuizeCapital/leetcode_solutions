@@ -1,0 +1,10 @@
+/* Write your T-SQL query statement below */
+with temp as (select
+*
+, datediff(second, lag(time_stamp) over(partition by user_id order by time_stamp), time_stamp) * 1.0 /3600 as time_diff 
+from confirmations)
+
+select 
+distinct user_id 
+from temp
+where time_diff <= 24
