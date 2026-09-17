@@ -1,0 +1,18 @@
+import pandas as pd
+def immediate_food_delivery(delivery: pd.DataFrame) -> pd.DataFrame:
+    
+    df = delivery.copy()
+    agg_dict ={
+        'min_order' : ('order_date', 'min')
+        ,'min_del' : ('customer_pref_delivery_date', 'min')
+    }
+
+    for new_col, (col, func) in agg_dict.items():
+        df[new_col] = df.groupby('customer_id')[col].transform(func)
+    
+    mask_flag = (df['order_date'] == df['min_order']) & (df['order_date'] == df['customer_pref_delivery_date'])
+    flagged = df[mask_flag]['customer_id'].nunique()
+    delis = delivery['customer_id'].nunique()
+
+    perc = f"{flagged / delis * 100:.2f}"
+    return pd.DataFrame({'immediate_percentage' : [float(perc)]})
