@@ -1,0 +1,16 @@
+class Solution(object):
+    def digitFrequencyScore(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # init_dict = defaultdict()
+        init_dict = {int(val): 0 for val in list(str(n))}
+
+        for val in list(str(n)):
+            init_dict[int(val)] += 1
+        final_sum = 0
+        for key, val in init_dict.items():
+            final_sum += key * val
+
+        return final_sum
