@@ -1,0 +1,18 @@
+import pandas as pd
+
+def find_the_first_day(weather: pd.DataFrame) -> pd.DataFrame:
+
+    weather = weather.rename(columns = {'degree' : 'init_degree'})
+    agg_dict = {
+        'degree' : ('init_degree', 'max')
+    }
+
+    weather = weather.sort_values(['city_id', 'init_degree', 'day'], ascending = [True, False, True])
+     
+    for new_col, (col, func) in agg_dict.items():
+        weather[new_col] = weather.groupby(['city_id'])[col].transform(func)
+
+    # return weather[['city_id', 'day', 'degree']].drop_duplicates(['city_id', 'degree'], keep = 'first')
+    return weather[['city_id', 'day', 'degree']].drop_duplicates(['city_id'], keep = 'first')
+    # return weather
+    
