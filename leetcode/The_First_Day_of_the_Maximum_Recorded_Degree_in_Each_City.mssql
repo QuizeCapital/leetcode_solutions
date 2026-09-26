@@ -1,0 +1,14 @@
+/* Write your T-SQL query statement below */
+with tmp as (
+    select 
+    *
+    , row_number() over (partition by city_id order by degree desc, day) as rn
+    from weather
+)
+
+select 
+city_id
+, day
+, degree
+from tmp 
+where rn = 1
