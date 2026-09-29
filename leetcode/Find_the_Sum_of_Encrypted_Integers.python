@@ -1,0 +1,22 @@
+class Solution(object):
+    def sumOfEncryptedInt(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        fin_sum = []
+        for i in nums:
+            str_i = list(str(i))
+            # print(str_i)
+            max_i = max(int(i) for i in str_i)
+            # print(max_i)
+            temp_lis = []
+            for i in range(len(list(str(i)))):
+                temp_lis.append(str(max_i))
+                ','.join(temp_lis)
+            # fin_val = sum(int(i) for i in temp_lis)
+            # for i in temp_Lis:
+            #     fin_sum.append(i)
+            fin_sum.append(temp_lis)
+            # print(sum(int(''.join(i)) for i in fin_sum))
+        return sum(int(''.join(i)) for i in fin_sum)
