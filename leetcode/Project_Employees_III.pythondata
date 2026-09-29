@@ -1,0 +1,12 @@
+import pandas as pd
+
+def project_employees(project: pd.DataFrame, employee: pd.DataFrame) -> pd.DataFrame:
+    df = project.merge(employee, on = 'employee_id')
+    agg_dict = {
+        'most_exp' : ('experience_years' , 'max')
+    }
+
+    for new_col, (col, func) in agg_dict.items():
+        df[new_col] = df.groupby('project_id')[col].transform(func)
+    
+    return df[df['experience_years'] == df['most_exp']][['project_id', 'employee_id']]
