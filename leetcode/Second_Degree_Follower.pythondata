@@ -1,0 +1,15 @@
+import pandas as pd
+
+def second_degree_follower(follow: pd.DataFrame) -> pd.DataFrame:
+    df = follow.copy()
+    intersected_rows = list(set(df['followee'].to_list()) & set(df['follower'].to_list()))
+
+    df = df[df['followee'].isin(intersected_rows)]
+    agg_dict = {
+        'num' : ('follower', 'nunique')
+    }
+    for new_col, (col, func) in agg_dict.items():
+        df[new_col] = df.groupby('followee')[col].transform(func)
+    df = df[['followee', 'num']]
+    df = df.rename(columns = {'followee': 'follower'})
+    return df.drop_duplicates().sort_values(by = ['follower'])
