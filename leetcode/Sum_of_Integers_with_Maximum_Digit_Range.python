@@ -1,0 +1,18 @@
+class Solution(object):
+    def maxDigitRange(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        max_range = 0 
+        sum_vals = 0
+        for ix, val in enumerate(nums):
+            max_val = max(int(i) for i in list(str(val)))
+            min_val = min(int(i) for i in list(str(val)))
+            diff  = max_val - min_val
+            if diff > max_range:
+                max_range = diff
+                sum_vals = val
+            elif diff == max_range:
+                sum_vals += val          
+        return sum_vals
