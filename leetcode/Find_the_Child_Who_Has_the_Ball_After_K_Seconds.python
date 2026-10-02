@@ -1,0 +1,22 @@
+class Solution(object):
+    def numberOfChild(self, n, k):
+        """
+        :type n: int
+        :type k: int
+        :rtype: int
+        """
+
+        period = 2 * (n - 1)
+        effective_steps = k % period 
+
+        position = 0
+        direction = 1
+
+        for i in range(effective_steps):
+            if position == 0:
+                direction = 1
+            elif position == n -1:
+                direction = -1
+            position += direction 
+        return position 
+            
