@@ -1,0 +1,19 @@
+import pandas as pd
+
+def biggest_window(user_visits: pd.DataFrame) -> pd.DataFrame:
+   df = user_visits.copy()
+   
+   df = df.sort_values(by = ['user_id', 'visit_date'])
+   agg_dict = {'next_visit' : ('visit_date', lambda x: x.shift(-1))}
+   for new_col, (col,func) in agg_dict.items():
+       df[new_col] = df.groupby('user_id')[col].transform(func)
+   df = df.fillna('2021-1-1')
+   df['days'] = (df['next_visit'] - df['visit_date']).dt.days
+   agg_dict_max = {
+    'biggest_window' : ('days', 'max')
+   }
+   for new_col, (col, func) in agg_dict_max.items():
+      df[new_col] = df.groupby('user_id')[col].transform(func)
+   return df[df['days'] == df['biggest_window']][['user_id', 'biggest_window']].drop_duplicates()
+
+    
