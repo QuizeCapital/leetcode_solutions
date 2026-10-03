@@ -1,0 +1,16 @@
+/* Write your T-SQL query statement below */
+with tmp as (select 
+*
+,isnull(lead(visit_date) over (partition by user_id order by visit_date),'2021-1-1') as next_visit
+from uservisits),
+tmp2 as (select 
+*
+, abs(datediff(day, next_visit, visit_date)) as biggest_window
+from tmp)
+
+select 
+user_id
+, max(biggest_window) as biggest_window
+from tmp2
+group by user_id
+order by user_id
