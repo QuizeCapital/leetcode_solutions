@@ -1,0 +1,9 @@
+import pandas as pd
+
+def dynamic_pivoting_table(products: pd.DataFrame) -> pd.DataFrame:
+    df = products.copy()
+
+    df = df.pivot(index = 'product_id', values = 'price', columns = 'store').reset_index()
+
+    return df
+    
