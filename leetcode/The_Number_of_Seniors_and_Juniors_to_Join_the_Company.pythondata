@@ -1,0 +1,18 @@
+import pandas as pd
+
+def count_seniors_and_juniors(candidates: pd.DataFrame) -> pd.DataFrame:
+    df = candidates.copy()
+    df = df.sort_values(by = ['experience', 'salary'])
+    df_sens = df[df['experience'] == 'Senior']
+    df_jun = df[df['experience'] == 'Junior']
+    df_sens['sum_sala'] = df_sens['salary'].cumsum()
+    df_jun['sum_sala'] = df_jun['salary'].cumsum()
+
+    df_sens = df_sens[df_sens['sum_sala'] <= 70000]
+    remainder = 70000 - df_sens['salary'].sum()
+    df_jun = df_jun[df_jun['sum_sala'] <= remainder]
+
+    fin_df = pd.DataFrame({'experience': ['Senior','Junior'], 'accepted_candidates': [len(df_sens),len(df_jun)]})
+
+    return fin_df
+    
