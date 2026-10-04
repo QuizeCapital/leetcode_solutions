@@ -1,0 +1,20 @@
+class Solution(object):
+    def divisorSubstrings(self, num, k):
+        """
+        :type num: int
+        :type k: int
+        :rtype: int
+        """
+        count_div = 0
+        num_str = list(str(num))
+        if len(num_str) < 2:
+            return 1
+        else:
+            for _ in range(len(str(num)) - k + 1):
+                # fin_sum = int(''.join([num_str[_], num_str[int(_) + 1]]))
+                fin_sum = int(''.join(num_str[_:_ + k]))
+                div_val = 1 if fin_sum == 0 else num % fin_sum
+                if div_val == 0:
+                    count_div += 1
+            return count_div
+        
