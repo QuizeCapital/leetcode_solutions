@@ -1,0 +1,24 @@
+/* Write your T-SQL query statement below */
+with tmp_trail as (select 
+user_id
+, activity_duration
+, round(avg(activity_duration * 1.0) over (partition by user_id),2) as trial_avg_duration 
+from useractivity 
+where activity_type = 'free_trial'),
+tmp_paid as (select 
+user_id
+, activity_duration
+, round(avg(activity_duration * 1.0) over (partition by user_id),2) as paid_avg_duration 
+from useractivity 
+where activity_type = 'paid')
+
+select 
+distinct u.user_id
+, t.trial_avg_duration 
+, p.paid_avg_duration
+from useractivity u 
+left join tmp_trail t on u.user_id = t.user_id
+left join tmp_paid p on u.user_id = p.user_id
+where activity_type = 'paid'
+and trial_avg_duration is not null
+order by u.user_id 
