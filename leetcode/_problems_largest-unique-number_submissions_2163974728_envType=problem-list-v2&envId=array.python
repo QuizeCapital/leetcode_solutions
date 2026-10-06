@@ -1,0 +1,17 @@
+from collections import defaultdict, Counter
+class Solution(object):
+    def largestUniqueNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        max_val = 0
+        if len(nums) == 1:
+            return nums[0]
+        dict_max = Counter(nums)
+        for key, value in dict_max.items():
+            if value == 1:
+                max_val = max(key, max_val) 
+
+        return max_val if max_val > 0 else -1
+        
