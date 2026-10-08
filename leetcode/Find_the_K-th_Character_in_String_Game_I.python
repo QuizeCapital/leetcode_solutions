@@ -1,0 +1,14 @@
+class Solution(object):
+    def kthCharacter(self, k):
+        """
+        :type k: int
+        :rtype: str
+        """
+        final_str = 'a'
+        while len(final_str) <= k:
+            shifted = ''
+            for ch in final_str:
+                shifted += chr(ord('a') + (ord(ch) - ord('a') + 1) % 26)
+            final_str += shifted
+        return final_str[k - 1]
+        
