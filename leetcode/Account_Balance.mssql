@@ -1,0 +1,11 @@
+/* Write your T-SQL query statement below */
+with tmp as (select *
+,case when type = 'Withdraw' then amount * -1 else amount end as adj_amount
+-- sum(amount) over (partition by account_id order by amount)
+from transactions)
+
+select 
+account_id, 
+day, 
+sum(adj_amount) over (partition by account_id order by day) as balance
+from tmp
