@@ -1,0 +1,16 @@
+/* Write your T-SQL query statement below */
+with tmp as (
+    select 1 as id
+    union all
+    select id + 1 as id 
+    from tmp 
+    where id <= 100
+)
+
+select t.id as ids from tmp t  
+-- full join customers c on t.id = c.customer_id
+-- and c.customer_id not in (select id from tmp)
+where t.id <= (select max(customer_id) from customers)
+except 
+select customer_id as ids
+from customers
