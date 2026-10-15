@@ -1,0 +1,18 @@
+import pandas as pd
+import numpy as np
+
+def rolling_average(steps: pd.DataFrame) -> pd.DataFrame:
+    steps = steps.sort_values(['user_id', 'steps_date'])
+    steps['next_date'] = steps.groupby('user_id')['steps_date'].transform(lambda x: x.shift(-1))
+
+    steps['date_diff'] = abs((steps['steps_date'] - steps['next_date']).dt.days)
+    steps['flag'] = np.where(steps['date_diff'] == 1, 1, 0)
+    steps['eligible'] = steps.groupby('user_id')['flag'].transform('sum')
+    steps = steps[
+    (steps['eligible'] >= 2) &
+    ((steps['date_diff'] == 1) | (steps['date_diff'].isna()))
+]    
+    steps['rolling_average'] = round(steps.groupby('user_id')['steps_count'].transform(lambda x: x.rolling(window = 3).mean()),2)
+
+    return steps[steps['rolling_average'].notna()][['user_id', 'steps_date', 'rolling_average']]
+    
