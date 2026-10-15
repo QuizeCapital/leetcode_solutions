@@ -1,0 +1,13 @@
+class Solution(object):
+    def checkTwoChessboards(self, coordinate1, coordinate2):
+        """
+        :type coordinate1: str
+        :type coordinate2: str
+        :rtype: bool
+        """
+        def check_cel(cord):
+            return (ord(cord[0])- 96) % 2 + int(cord[1])
+
+        print(check_cel(coordinate1))
+        print(check_cel(coordinate2))
+        return True if check_cel(coordinate1) % 2 == check_cel(coordinate2) % 2 else False
