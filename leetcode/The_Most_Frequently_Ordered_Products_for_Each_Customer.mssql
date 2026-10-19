@@ -1,0 +1,23 @@
+/* Write your T-SQL query statement below */
+with tmp as (select 
+o.customer_id
+, o.product_id
+, p.product_name
+, count(product_name)  as freq_prod
+from orders o 
+left join customers c on o.customer_id = c.customer_id
+left join products p on o.product_id = p.product_id
+group by o.customer_id, o.product_id,product_name
+-- order by  o.customer_id , count(product_name) desc
+),
+rank_tmp as(select 
+*
+,dense_rank() over (partition by customer_id order by freq_prod desc) as rank
+from tmp )
+
+select 
+customer_id
+,product_id
+,product_name 
+from rank_tmp 
+where rank = 1
