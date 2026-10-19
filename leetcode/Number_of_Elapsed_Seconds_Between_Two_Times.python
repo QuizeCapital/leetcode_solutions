@@ -1,0 +1,14 @@
+# import panda as pd
+class Solution(object):
+    def secondsBetweenTimes(self, startTime, endTime):
+        """
+        :type startTime: str
+        :type endTime: str
+        :rtype: int
+        """
+        start_list = startTime.split(':')
+        end_list = endTime.split(':')
+        start_secs = int(start_list[0])*60*60 + int(start_list[1])*60 + int(start_list[2])
+        end_secs = int(end_list[0])*60*60 + int(end_list[1])*60 + int(end_list[2])
+        return abs(start_secs - end_secs)
+        
