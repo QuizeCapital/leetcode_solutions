@@ -1,0 +1,7 @@
+/* Write your T-SQL query statement below */
+select 
+p.product_id 
+, isnull((price - ((discount * 1.0/100) * price)), price) as final_price
+,p.category as category
+from discounts d
+right join products p on d.category = p.category 
