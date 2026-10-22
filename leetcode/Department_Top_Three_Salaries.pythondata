@@ -1,0 +1,21 @@
+import pandas as pd
+
+def top_three_salaries(employee: pd.DataFrame, department: pd.DataFrame) -> pd.DataFrame:
+    df  =  employee.merge(department, left_on = 'departmentId', right_on = 'id')
+
+    # agg_dict = {
+    #     'flag' : ('salary', lambda x: x.isin(list(set(sorted(x.to_list(), reverse = True)))[:3]))
+    # }
+
+    agg_dict = {
+        'flag' : ('salary', lambda x: x.isin(sorted(set(x), reverse=True)[:3]))
+    }
+
+
+    for new_col, (col, func) in agg_dict.items():
+        df[new_col] = df.groupby('name_y')[col].transform(func)
+    
+    return df[df['flag'] == 1].rename(columns = {'name_y' : 'Department', 'name_x' : 'Employee', 'salary' : 'Salary'})[['Department', 'Employee', 'Salary']]
+    # return df
+
+
