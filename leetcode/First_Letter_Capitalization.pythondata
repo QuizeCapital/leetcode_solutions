@@ -1,0 +1,15 @@
+import pandas as pd
+
+def process_text(user_content: pd.DataFrame) -> pd.DataFrame:
+    def join_x(x):
+        full_str = list(x)[0].upper()
+        for ind, i in enumerate(list(x)[1:]):
+            if list(x)[ind] == ' ':
+                full_str += i.upper() 
+            else: 
+                full_str += i.lower()
+        return full_str
+    user_content['converted_text'] = user_content['content_text'].apply(join_x)
+    user_content = user_content.rename(columns = {'content_text': 'original_text'})
+
+    return user_content
