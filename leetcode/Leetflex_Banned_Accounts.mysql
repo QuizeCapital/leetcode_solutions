@@ -1,0 +1,25 @@
+# Write your MySQL query statement below
+SELECT DISTINCT a.account_id
+FROM LogInfo a
+JOIN LogInfo b
+  ON a.account_id = b.account_id
+ AND a.ip_address <> b.ip_address
+ AND a.login <= b.logout
+ AND b.login <= a.logout;
+-- with tmp as (select 
+-- *
+-- ,ifnull(lead(login) over (partition by account_id order by login asc), min(logout) OVER (PARTITION BY account_id)) as next_login
+-- -- ,ifnull(lead(ip_address) over (partition by account_id order by login asc), ip_address) as next_ip
+-- -- ,lead(login) over (partition by account_id order by login asc) as next_login
+-- ,lead(ip_address) over (partition by account_id order by login asc) as next_ip
+-- from loginfo)
+
+-- select * from tmp
+
+-- select 
+-- distinct account_id 
+-- from tmp 
+-- where cast(next_login as datetime) <=  cast(logout as datetime)
+-- and next_ip != ip_address
+
+
