@@ -1,0 +1,11 @@
+import pandas as pd
+
+def median_employee_salary(employee: pd.DataFrame) -> pd.DataFrame:
+
+    employee = employee.sort_values(['company', 'salary', 'id'])
+    employee['rnk'] = employee.groupby('company').cumcount() + 1
+    employee['n'] = employee.groupby('company')['salary'].transform('count')
+    median_employees = employee[employee['rnk'].between(employee['n'] / 2, employee['n'] / 2 + 1)]
+
+    return median_employees[['id', 'company', 'salary']]
+    
