@@ -1,0 +1,18 @@
+class Solution(object):
+    def minMaxDifference(self, num):
+        """
+        :type num: int
+        :rtype: int
+        """
+        num_lis = str(num)
+        min_num = num_lis 
+        ind = 0
+        while ind < len(num_lis) and num_lis[ind] == '9':
+            ind += 1
+        if ind < len(num_lis):
+            num_lis = num_lis.replace(num_lis[ind], "9")
+        min_num = min_num.replace(min_num[0], "0")
+
+        return int(num_lis) - int(min_num)
+
+        
