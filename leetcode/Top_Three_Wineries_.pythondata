@@ -1,0 +1,21 @@
+import pandas as pd
+
+def top_three_wineries(wineries: pd.DataFrame) -> pd.DataFrame:
+    wineries['points_total'] = wineries.groupby(['country', 'winery'])['points'].transform('sum')
+    wineries = wineries.drop_duplicates(['country', 'winery'])
+    wineries = wineries.sort_values(['country', 'winery'], ascending = [True, True])
+    wineries['ranks'] = wineries.groupby('country')['points_total'].rank(ascending = False, method = 'first')
+    wineries['pos'] = np.where(wineries['ranks'] == 1, 'top_winery', (np.where(wineries['ranks'] == 2, 'second_winery', 'third_winery')))
+    wineries = wineries[wineries['ranks'] <= 3]
+    wineries['points_total'] = wineries['points_total'].astype(str)
+    wineries['winery_points'] = wineries['winery'] + " " + "(" + wineries['points_total'] + ")"
+    # print(wineries)
+    wineries = wineries.pivot(index = 'country',columns = 'pos', values = 'winery_points').reset_index()
+    wineries['third_winery'] = wineries['third_winery'] if 'third_winery' in wineries.columns else 'No third winery'
+    wineries['second_winery'] = wineries['second_winery'] if 'second_winery' in wineries.columns else 'No second winery'
+    wineries['second_winery'] = wineries['second_winery'].fillna('No second winery')
+    wineries['third_winery'] = wineries['third_winery'].fillna('No third winery')
+
+    return wineries[['country', 'top_winery', 'second_winery', 'third_winery']]
+
+    # return wineries
