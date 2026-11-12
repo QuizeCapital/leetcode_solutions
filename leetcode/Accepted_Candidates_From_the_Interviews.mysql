@@ -1,0 +1,22 @@
+# Write your MySQL query statement below
+with cand_tmp as (
+    select 
+    *
+    from candidates 
+    where years_of_exp >= 2
+),
+round_tmp as (
+    select 
+    interview_id
+    , sum(score) as total_score
+    from 
+    rounds
+    group by interview_id 
+    having total_score > 15
+)
+
+select 
+candidate_id
+from round_tmp r
+left join cand_tmp c on r.interview_id = c.interview_id
+where candidate_id is not null
