@@ -1,0 +1,15 @@
+class Solution(object):
+    def predictTheWinner(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        n = len(nums)
+        if n % 2 == 0:
+            return True 
+        dp = list(nums)
+        for back_step in range(n - 2, -1, -1): # step backwards in steps of 1 
+            for fwd_step in range(back_step + 1, n): # move forwards
+                dp[fwd_step] = max(nums[back_step] - dp[fwd_step], nums[fwd_step] - dp[fwd_step - 1])
+
+        return dp[-1] >= 0
